@@ -1,61 +1,87 @@
-# New function to calculate Recovery_Score
+import pandas as pd
+from datetime import datetime
+
+
+def load_data():
+    """
+    Load and clean the health data from CSV.
+
+    This function:
+    - Reads data from 'data/health_data.csv'.
+    - Fills missing 'Steps' with the median value.
+    - Fills missing 'Sleep_Hour' with 7.0.
+    - Fills missing 'Heart_Rate_bpm' with 68.
+    - Fills other missing values with their column median.
+    - Converts 'Date' column to datetime objects.
+
+    Returns:
+        pd.DataFrame: A cleaned pandas DataFrame.
+    """
+    # Load the CSV file into a DataFrame
+    df = pd.read_csv('data/health_data.csv')
+
+    # Fill missing values for specific columns
+    if 'Steps' in df:
+        df['Steps'].fillna(df['Steps'].median(), inplace=True)
+
+    if 'Sleep_Hour' in df:
+        df['Sleep_Hour'].fillna(7.0, inplace=True)
+
+    if 'Heart_Rate_bpm' in df:
+        df['Heart_Rate_bpm'].fillna(68, inplace=True)
+
+    # Fill any other numerical columns with the median of that column
+    df.fillna(df.median(numeric_only=True), inplace=True)
+
+    # Convert 'Date' column to datetime objects
+    if 'Date' in df:
+        df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+
+    return df
+
 
 def calculate_recovery_score(df):
     """
-    Adds a 'Recovery_Score' column to the DataFrame, representing the daily recovery score (0 to 100).
+    Calculate and add 'Recovery_Score' to the DataFrame.
+
+    The score is calculated based on:
+    - Sleep_Hours: 7+ hours significantly improve the score, <6 is bad.
+    - Heart_Rate_bpm: A lower heart rate is better.
+    - Steps: Higher steps can indicate good activity but might slightly reduce recovery.
 
     Args:
-        df (pd.DataFrame): DataFrame containing health data.
+        df (pd.DataFrame): DataFrame with necessary health data columns.
+    """
+    # Initialize Recovery_Score with a baseline of 50
+    df['Recovery_Score'] = 50
+
+    # Adjust score based on sleep_hours
+    df.loc[df['Sleep_Hours'] >= 7, 'Recovery_Score'] += 20  # Good sleep
+    df.loc[df['Sleep_Hours'] < 6, 'Recovery_Score'] -= 20  # Poor sleep
+
+    # Adjust score based on heart_rate_bpm
+    # Lower heart rate improves recovery
+    df['Recovery_Score'] -= (df['Heart_Rate_bpm'] - 65) * 0.5
+
+    # Adjust score based on steps
+    # High steps may slightly decrease recovery due to potential strain
+    df['Recovery_Score'] -= ((df['Steps'] - 10000) / 1000) * 2
+
+    # Ensure Recovery_Score stays between 0 and 100
+    df['Recovery_Score'] = df['Recovery_Score'].clip(lower=0, upper=100)
+
+    return df
+
+
+def process_data():
+    """
+    Process the data by loading it, calculating the recovery score, and returning the final DataFrame.
+
+    This function is intended for use with the Streamlit dashboard.
 
     Returns:
-        pd.DataFrame: Modified DataFrame with the new 'Recovery_Score' column.
+        pd.DataFrame: A processed pandas DataFrame with Recovery Scores.
     """
-    # Initialize scores based on Sleep_Hours, Heart_Rate_bpm, and Steps
-    
-    def score_sleep_hours(hours):
-        """Assign recovery score based on sleep hours."""
-        if hours >= 7:
-            return 30  # Good sleep
-        elif hours >= 6:
-            return 20  # Adequate sleep
-        else:
-            return 0   # Poor sleep
-
-    def score_heart_rate(bpm):
-        """Assign recovery score based on heart rate."""
-        if bpm < 60:
-            return 30  # Excellent heart rate
-        elif bpm <= 75:
-            return 20  # Good heart rate
-        else:
-            return 10  # Average heart rate
-
-    def score_steps(steps):
-        """Assign recovery score based on steps taken."""
-        if steps < 5000:
-            return 10  # Low activity
-        elif steps <= 10000:
-            return 20  # Moderate activity
-        else:
-            return 10  # High activity can cause strain
-
-    # Calculate Recovery_Score
-    scores = []
-    for _, row in df.iterrows():
-        sleep_score = score_sleep_hours(row['Sleep_Hours'])
-        heart_score = score_heart_rate(row['Heart_Rate_bpm'])
-        steps_score = score_steps(row['Steps'])
-        
-        # Calculate total recovery score
-        total_score = sleep_score + heart_score + steps_score
-
-        # Ensure score is between 0 to 100
-        total_score = min(max(total_score, 0), 100)
-        
-        # Append to the scores list
-        scores.append(total_score)
-
-    # Add Recovery_Score to DataFrame
-    df['Recovery_Score'] = scores
-
+    df = load_data()
+    df = calculate_recovery_score(df)
     return df
