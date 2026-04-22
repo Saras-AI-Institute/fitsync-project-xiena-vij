@@ -6,13 +6,17 @@ import plotly.express as px
 
 st.set_page_config(layout="wide", page_title="FitSync - Trends", page_icon="📈")
 
+@st.cache_data
+def get_processed_data():
+    return process_data()
+
 theme = apply_theme("trends")
 T = theme
 
 gradient = "linear-gradient(135deg, #0f3d20 0%, #0d2137 100%)" if T["is_dark"] else "linear-gradient(135deg, #dcfce7 0%, #eff6ff 100%)"
 page_banner("📈 Trends & Insights", "Deeper analysis of your health patterns over time", gradient, T)
 
-df = process_data()
+df = get_processed_data()
 
 st.sidebar.markdown(f"<div style='font-size:18px; font-weight:700; margin-bottom:16px;'>⚙️ Filters</div>", unsafe_allow_html=True)
 time_range = st.sidebar.selectbox("Select Time Range", ["Last 7 Days", "Last 30 Days", "All Time"], index=2)

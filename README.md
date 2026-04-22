@@ -1,36 +1,41 @@
-# 🚀 Code with AI: FitSync Analytics
+# 🩺 FitSync - Your Personal Health Analytics Platform
 
-Welcome to the **FitSync** project! This repository is your home for the next 5 weeks as we build a professional-grade health analytics dashboard using AI-driven workflows.
-
-## 📋 Project Basics
-* **Project Title:** FitSync (Personal Health Analytics)
-* **Course:** Code with AI 
-* **Institution:** Saras AI Institute 
-
-## 🛠️ Repository Setup & Naming
-**CRITICAL:** When you clone the repository, ensure your repository follows this naming convention:
-`fitsync-project-firstname-lastname`
-
-## 💻 How to Start (Codespaces)
-We use a cloud-based "AI Cockpit" to ensure a consistent environment for everyone.
-1. Click the green **"<> Code"** button at the top right of this page.
-2. Select the **Codespaces** tab.
-3. Click **"Create codespace on main"**.
-4. Once it loads, ensure the **Continue** extension is active.
-
-## 📅 Weekly Workflow (Update After Each Session)
-You are expected to commit your progress after every live session.
-* **Week 1:** Scaffold folders and generate `health_data.csv`.
-* **Week 2:** Clean data and implement the `Recovery Score` logic.
-* **Week 3:** Build the Streamlit UI and KPI metrics.
-* **Week 4:** Add Plotly visualizations and @st.cache optimization.
-* **Week 5:** Finalize documentation and deploy live.
-
-## 📤 Submission Instructions
-1. Ensure all your changes are pushed to GitHub: `git push origin main`.
-2. Copy the URL of your repository (e.g., `https://github.com/saras-ai/fitsync-project-firstname-lastname`).
-3. Paste this URL into the **Module 1 Assignment** slot in the **LMS (Learning Management System)**.
-4. **Note:** Your code will also be automatically graded via GitHub Actions.
+Welcome to **FitSync**! Empowering you with actionable insights to optimize your personal health.
 
 ---
+
+## 🌟 Project Overview
+
+FitSync is a cutting-edge, AI-enhanced health analytics platform designed to visualize personal health metrics seamlessly. This three-page web application, built with Python and Streamlit, offers a comprehensive suite of visual dashboards that deliver real-time insights into your personal health data. Key features include a dashboard to view KPIs and charts, and a trends page that provides histograms and insightful analytics on historical health patterns. Designed with recruiters in mind, this project exemplifies leveraging modern tech stacks and AI enhancements to drive impactful user experiences.
+
+---
+
+## 📚 Tech Stack
+
+![Python](https://img.shields.io/badge/Python-3.8-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-Framework-orange)
+![Pandas](https://img.shields.io/badge/Pandas-Data_Analysis-yellowgreen)
+![Plotly](https://img.shields.io/badge/Plotly-Visualization-blueviolet)
+![GitHub Codespaces](https://img.shields.io/badge/GitHub-Codespaces-lightgrey)
+
+---
+
+## ⚡ How to Run
+
+1. Clone the repository using:
+   ```bash
+   git clone https://github.com/your-username/fitsync
+   ```
+2. Open a new Codespace.
+3. In the terminal, run the following command:
+   ```bash
+   streamlit run main.py
+   ```
+
+---
+
+## 🤖 Built with AI
+
+FitSync was built with the assistance of Continue Agent within GitHub Codespaces, streamlining our syntax generation and development workflow. However, it's important to note that all architectural and data logic decisions were owned and crafted by the development team, ensuring a robust and customized health analytics solution.---
 *Built with GitHub Copilot & Cursor @ Saras AI Institute*.
+

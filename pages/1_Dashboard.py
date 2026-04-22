@@ -12,7 +12,12 @@ T = theme
 gradient = "linear-gradient(135deg, #1f3a5f 0%, #0d2137 100%)" if T["is_dark"] else "linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%)"
 page_banner("📊 FitSync Dashboard", "Your personal health metrics at a glance", gradient, T)
 
-df = process_data()
+@st.cache_data
+def get_processed_data():
+    return process_data()
+
+# process_data function call modified with caching
+df = get_processed_data()
 
 st.sidebar.markdown(f"<div style='font-size:18px; font-weight:700; margin-bottom:16px;'>⚙️ Filters</div>", unsafe_allow_html=True)
 time_range = st.sidebar.selectbox("Select Time Range", ["Last 7 Days", "Last 30 Days", "All Time"], index=2)
